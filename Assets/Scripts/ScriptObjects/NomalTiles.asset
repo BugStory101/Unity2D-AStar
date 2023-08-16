@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987d1388ae5b1254491b8c5d41e49cb5, type: 3}
+  m_Name: NomalTiles
+  m_EditorClassIdentifier: 
+  Tiles:
+  - {fileID: 11400000, guid: cb7fcf5816f8e674da12fe733eebeaf6, type: 2}
+  - {fileID: 11400000, guid: 2b1159b8ff0904546a219beda33bfe3b, type: 2}
+  - {fileID: 11400000, guid: f199995b809745f4a90765cb116628c8, type: 2}
+  - {fileID: 11400000, guid: 945bf9ea66d6b0545b704cb2dd5d3b50, type: 2}
+  m_IsWall: 0
