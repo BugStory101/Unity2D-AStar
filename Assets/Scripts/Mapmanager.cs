@@ -29,21 +29,24 @@ public class Mapmanager : MonoBehaviour
 
     public void LateUpdate()
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int gridPosition = Tilemap.WorldToCell(mousePosition);
-        TileBase clickTile = Tilemap.GetTile(gridPosition);
-
-        if (clickTile == null)
-            return;
-
-        if(m_DataFromTiles[clickTile].IsWall)
+        if(Input.GetMouseButtonUp(0))
         {
-            Debug.Log("IsWall True");
-        }
-        else
-        {
-            Debug.Log("IsWall False");
-        }        
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int gridPosition = Tilemap.WorldToCell(mousePosition);
+            TileBase clickTile = Tilemap.GetTile(gridPosition);
+
+            if (clickTile == null)
+                return;
+
+            if (m_DataFromTiles[clickTile].IsWall)
+            {
+                Debug.Log("IsWall True");
+            }
+            else
+            {
+                Debug.Log("IsWall False");
+            }
+        }      
     }
 
 
