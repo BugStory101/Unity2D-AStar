@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -9,20 +7,20 @@ public class Mapmanager : MonoBehaviour
     [SerializeField]
     public Tilemap Tilemap;
 
-    public Dictionary<TileBase, TileData> m_DataFromTiles;
+    public Dictionary<TileBase, TileData> DataFromTiles;
     [SerializeField]
     private List<TileData> m_TileDatas;
 
     public void Awake()
     {
         Tilemap.CompressBounds();
-        m_DataFromTiles = new Dictionary<TileBase, TileData>();
+        DataFromTiles = new Dictionary<TileBase, TileData>();
 
         foreach (TileData tileData in m_TileDatas)
         {
             foreach (TileBase tileBase in tileData.Tiles)
             {
-                m_DataFromTiles.Add(tileBase, tileData);
+                DataFromTiles.Add(tileBase, tileData);
             }
         }
     }
@@ -38,7 +36,7 @@ public class Mapmanager : MonoBehaviour
             if (clickTile == null)
                 return;
 
-            if (m_DataFromTiles[clickTile].IsWall)
+            if (DataFromTiles[clickTile].IsWall)
             {
                 Debug.Log("IsWall True");
             }
