@@ -13,7 +13,7 @@ public class Node
     }
 
     public Vector3Int Position;
-    public Node ParentNode { get; set; }
+    public Vector3Int ParentPosition { get; set; }
 
     public Node(Vector3Int position)
     {
