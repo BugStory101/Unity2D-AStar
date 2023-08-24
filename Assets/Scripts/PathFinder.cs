@@ -12,6 +12,7 @@ public class PathFinder : MonoBehaviour
     private const int DIAGNAL_COST = 14;
 
     private Node CursorNode;
+    private TilemapNodes TilemapNodes;
     private Mapmanager Mapmanager;
 
     private List<Node> OpenList;
@@ -21,6 +22,7 @@ public class PathFinder : MonoBehaviour
     public void Awake()
     {
         Mapmanager = GetComponent<Mapmanager>();
+        TilemapNodes = new TilemapNodes(Mapmanager.Tilemap);
     }
 
     public bool Find(Vector3Int startPosition, Vector3Int goalPosition)
@@ -29,22 +31,26 @@ public class PathFinder : MonoBehaviour
         CloseList = new List<Node>();
 
         StartNodePosition = startPosition;
-        /*
-        Node StartNode = Mapmanager.GetNodeOrNull(StartPosition);
+
+
+        
+        Node StartNode = TilemapNodes.GetNodeOrNull(startPosition);
         if (StartNode == null)
         {
             print("StartNode not found");
             return false;
         }
 
-        GoalPosition = goalPosition;
-        Node GoalNode = m_Mapmanager.GetNodeOrNull(GoalPosition);
+        GoalNodePosition = goalPosition;
+        Node GoalNode = TilemapNodes.GetNodeOrNull(goalPosition);
         if (GoalNode == null)
         {
             print("GoalNode not found");
             return false;
         }
-        */
+        
+
+
 
 
 
@@ -54,6 +60,18 @@ public class PathFinder : MonoBehaviour
         return true;
     }
 
+
+    private void AddOpenList(Vector3Int nodePosition)
+    {
+        Node addNode = TilemapNodes.GetNodeOrNull(nodePosition);
+
+        if (addNode == null)
+            return;
+
+        
+
+
+    }
 
 
 }
