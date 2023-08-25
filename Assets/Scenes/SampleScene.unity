@@ -225,6 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 815992180}
   - component: {fileID: 815992179}
+  - component: {fileID: 815992181}
   m_Layer: 0
   m_Name: Mapmanager
   m_TagString: Untagged
@@ -245,9 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tilemap: {fileID: 1488466768}
-  m_TileDatas:
-  - {fileID: 11400000, guid: c52511cc547f3754e95010ae0b96b9a4, type: 2}
-  - {fileID: 11400000, guid: 78002e13adf13ed4fa7c8b285bea9267, type: 2}
+  m_TileDatas: []
 --- !u!4 &815992180
 Transform:
   m_ObjectHideFlags: 0
@@ -263,6 +262,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &815992181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815992178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec18930068b9fe648a5f17062327f54c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TileDatas:
+  - {fileID: 11400000, guid: c52511cc547f3754e95010ae0b96b9a4, type: 2}
+  - {fileID: 11400000, guid: 78002e13adf13ed4fa7c8b285bea9267, type: 2}
 --- !u!1 &1488466765
 GameObject:
   m_ObjectHideFlags: 0

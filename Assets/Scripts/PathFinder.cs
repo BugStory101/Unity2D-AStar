@@ -12,7 +12,8 @@ public class PathFinder : MonoBehaviour
     private const int DIAGNAL_COST = 14;
 
     private Node CursorNode;
-    private TilemapNodes TilemapNodes;
+    private TilemapDatas TilemapDatas;
+    private TilemapNodes TilemapNodes;    
     private Mapmanager Mapmanager;
 
     private List<Node> OpenList;
@@ -22,6 +23,7 @@ public class PathFinder : MonoBehaviour
     public void Awake()
     {
         Mapmanager = GetComponent<Mapmanager>();
+        TilemapDatas = new TilemapDatas();
         TilemapNodes = new TilemapNodes(Mapmanager.Tilemap);
     }
 

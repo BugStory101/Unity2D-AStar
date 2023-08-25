@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TilemapDatas
+public class TilemapDatas : MonoBehaviour
 {
     public Dictionary<TileBase, TileData> DataFromTiles;
 
@@ -27,8 +27,4 @@ public class TilemapDatas
     {
         return DataFromTiles[tileBase].IsWall;
     }
-
-
-
-
 }
