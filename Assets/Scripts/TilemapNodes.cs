@@ -2,17 +2,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TilemapNodes
+public class TilemapNodes : MonoBehaviour
 {
     public Dictionary<Vector3Int, Node> PositionFromNode;
 
     private Tilemap Tilemap;
 
-    public TilemapNodes(Tilemap tilemap)
+    void Awake()
     {
+        Tilemap = GetComponent<Mapmanager>().Tilemap;
+
         PositionFromNode = new Dictionary<Vector3Int, Node>();
-        
-        Tilemap = tilemap;
+
         int minX = (int)Tilemap.localBounds.min.x;
         int minY = (int)Tilemap.localBounds.min.y;
 
@@ -23,13 +24,11 @@ public class TilemapNodes
         {
             for (int y = minY; maxY >= y; ++y)
             {
-                // Add Noded.
                 Node node = new Node(new Vector3Int(x, y));
-                PositionFromNode.Add(node.Position, node); 
+                PositionFromNode.Add(node.Position, node);
             }
         }
     }
-      
 
     public Node GetNodeOrNull(Vector3Int position)
     {
@@ -38,13 +37,4 @@ public class TilemapNodes
 
         return returnNode;
     }
-
-
-
-
-
-
-
-
-
 }

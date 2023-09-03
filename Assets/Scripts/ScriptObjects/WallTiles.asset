@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: WallTiles
   m_EditorClassIdentifier: 
   Tiles:
-  - {fileID: 11400000, guid: 40816d674a037be42ac477188de766de, type: 2}
   - {fileID: 11400000, guid: 53b81988ac6a2fb46af16883f8c102b0, type: 2}
   - {fileID: 11400000, guid: 16e45bb4f5119ab48b00458ec5ec0c9f, type: 2}
   - {fileID: 11400000, guid: 23357d615cadc754299eb12c77e12de0, type: 2}

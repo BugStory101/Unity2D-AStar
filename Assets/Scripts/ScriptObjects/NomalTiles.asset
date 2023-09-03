@@ -15,6 +15,7 @@ MonoBehaviour:
   Tiles:
   - {fileID: 11400000, guid: cb7fcf5816f8e674da12fe733eebeaf6, type: 2}
   - {fileID: 11400000, guid: 2b1159b8ff0904546a219beda33bfe3b, type: 2}
-  - {fileID: 11400000, guid: f199995b809745f4a90765cb116628c8, type: 2}
   - {fileID: 11400000, guid: 945bf9ea66d6b0545b704cb2dd5d3b50, type: 2}
+  - {fileID: 11400000, guid: f199995b809745f4a90765cb116628c8, type: 2}
+  - {fileID: 11400000, guid: 40816d674a037be42ac477188de766de, type: 2}
   m_IsWall: 0
