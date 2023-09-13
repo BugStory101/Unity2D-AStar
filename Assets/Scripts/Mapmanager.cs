@@ -7,10 +7,10 @@ public class Mapmanager : MonoBehaviour
     [SerializeField]
     public Tilemap Tilemap;
 
-    private bool mb_ClickedStart = false;
-    private bool mb_ClickedGoal = false;
-    private Vector3Int m_StartPosition;
-    private Vector3Int m_GoalPosition;
+    private bool b_ClickedStart = false;
+    private bool b_ClickedGoal = false;
+    private Vector3Int StartPosition;
+    private Vector3Int GoalPosition;
 
     [SerializeField]
     private TileBase StartTileBase;
@@ -21,15 +21,20 @@ public class Mapmanager : MonoBehaviour
     private TileBase SaveGoalTileBase;
 
     private TilemapDatas TilemapDatas;
-
-    private PathFinder PathFinder;
+    private TilemapNodes TilemapNodes;
+    private TileLineViewer LineViewer;
+    private TileTextViewer TileTextViewer;
+    private PathFinder PathFinder;    
 
 
     public void Awake()
     {
         Tilemap.CompressBounds();
         TilemapDatas = GetComponent<TilemapDatas>();
+        TilemapNodes = GetComponent<TilemapNodes>();
         PathFinder = GetComponent<PathFinder>();
+        LineViewer = GetComponent<TileLineViewer>();
+        TileTextViewer = GetComponent<TileTextViewer>();
     }
 
     private void LateUpdate()
@@ -50,6 +55,12 @@ public class Mapmanager : MonoBehaviour
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int gridPosition = Tilemap.WorldToCell(mousePosition);
+        Node addNode = TilemapNodes.GetNodeOrNull(gridPosition);
+
+        // Tilemap 범위 밖이면
+        if (addNode == null)
+            return;
+
         TileBase tileBase = Tilemap.GetTile(gridPosition);
 
         if (TilemapDatas.IsWall(tileBase))
@@ -58,39 +69,43 @@ public class Mapmanager : MonoBehaviour
         }
 
         // Click Off
-        if (m_StartPosition == gridPosition)
+        if (StartPosition == gridPosition)
         {
-            m_StartPosition = new Vector3Int(9999, 9999);
+            LineViewer.SetLineVisible(false);
+
+            StartPosition = new Vector3Int(9999, 9999);
             Tilemap.SetTile(gridPosition, SaveStartTileBase);
-            mb_ClickedStart = false;
+            b_ClickedStart = false;
 
             return;
         }
-        if (m_GoalPosition == gridPosition)
+        if (GoalPosition == gridPosition)
         {
-            m_GoalPosition = new Vector3Int(-9999, -9999);
+            LineViewer.SetLineVisible(false);
+
+            GoalPosition = new Vector3Int(-9999, -9999);
             Tilemap.SetTile(gridPosition, SaveGoalTileBase);
-            mb_ClickedGoal = false;
+            b_ClickedGoal = false;
 
             return;
         }
 
         // Click On
-        if (mb_ClickedStart == false)
+        if (b_ClickedStart == false)
         {
-            m_StartPosition = gridPosition;
+            StartPosition = gridPosition;
             SaveStartTileBase = Tilemap.GetTile(gridPosition);
             Tilemap.SetTile(gridPosition, StartTileBase);
-            mb_ClickedStart = true;
+            b_ClickedStart = true;
 
             return;
         }
-        if (mb_ClickedGoal == false)
+        if (b_ClickedGoal == false)
         {
-            m_GoalPosition = gridPosition;
+            GoalPosition = gridPosition;
             SaveGoalTileBase = Tilemap.GetTile(gridPosition);
             Tilemap.SetTile(gridPosition, GoalTileBase);
-            mb_ClickedGoal = true;
+            b_ClickedGoal = true;
 
             return;
         }
@@ -98,16 +113,25 @@ public class Mapmanager : MonoBehaviour
 
     private void MouseRightClickUp()
     {
-        if(mb_ClickedStart && mb_ClickedGoal)
-        {
-            if (PathFinder.Find(m_StartPosition, m_GoalPosition) == false)
-                return;
+        if ((b_ClickedStart == false) || (b_ClickedGoal == false))
+            return;
 
-            List<Vector3Int> PathList = PathFinder.GetPathList();
-            for (int i = 0; i < PathList.Count; ++i)
-            {
-                Debug.Log(PathList[i]);
-            }
-        }
+        TilemapNodes.ClearNodeData();
+        TileTextViewer.ClearText();
+
+        // Find
+        if (PathFinder.Find(StartPosition, GoalPosition) == false)
+            return;
+
+        // Line
+        List<Vector3Int> pathList = PathFinder.GetPathList();
+        LineViewer.AddPositionList(pathList);
+        LineViewer.SetLineVisible(true);
+
+        // Text
+        List<Node> openList = PathFinder.GetOpenList();
+        TileTextViewer.SetTileCost(openList);
+        List<Node> closeList = PathFinder.GetCloseList();
+        TileTextViewer.SetTileCost(closeList);
     }
 }

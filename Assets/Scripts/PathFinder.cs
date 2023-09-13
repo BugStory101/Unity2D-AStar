@@ -14,7 +14,7 @@ public class PathFinder : MonoBehaviour
 
     private Node CursorNode;
     private TilemapDatas TilemapDatas;
-    private TilemapNodes TilemapNodes;    
+    private TilemapNodes TilemapNodes;
 
     private List<Node> OpenList;
     private List<Node> CloseList;
@@ -49,18 +49,7 @@ public class PathFinder : MonoBehaviour
         OpenList.Add(StartNode);
         while (OpenList.Count > 0)
         {
-            CursorNode = OpenList[0];
-
-            for (int i = 1; i <  OpenList.Count; ++i)
-            {
-                // Tilemap에서는 F, G, H가 똑같은 값이 있다.
-                if (OpenList[i].F <= CursorNode.F &&
-                    OpenList[i].H <  CursorNode.H &&
-                    OpenList[i].G <  CursorNode.G)
-                {
-                    CursorNode = OpenList[i];
-                }
-            }
+            CursorNode = GetCurrsorNode();
 
             // 마지막 노드.
             if (CursorNode == GoalNode)
@@ -136,10 +125,23 @@ public class PathFinder : MonoBehaviour
         return PathList;
     }
 
+    public List<Node> GetOpenList()
+    {
+        return OpenList;
+    }
+
+    public List<Node> GetCloseList()
+    {
+        return CloseList;
+    }
+
     private void AddOpenList(Vector3Int nodePosition)
     {
         Node addNode = TilemapNodes.GetNodeOrNull(nodePosition);
 
+        // Tilemap 범위 밖이면
+        if (addNode == null)
+            return;
         // 벽
         if (TilemapDatas.IsWall(nodePosition) == true)
             return;
@@ -162,13 +164,16 @@ public class PathFinder : MonoBehaviour
         if (OpenList.Contains(addNode) == true)
         {
             int newG = CursorNode.G + gScore;
+            //int newH = CalculateH(addNode);
             int newH = (Mathf.Abs(addNode.Position.x - GoalNodePosition.x) +
                      Mathf.Abs(addNode.Position.y - GoalNodePosition.y)) * CROSS_COST;
             int newF = newG + newH;
 
 
             int index = OpenList.IndexOf(addNode);
-            if (newF <= addNode.F && newH < addNode.H)
+            if (newF <= addNode.F && 
+                //newH < addNode.H)
+                newG <= addNode.G)
             {
                 OpenList[index].G = newG;
                 OpenList[index].H = newH;
@@ -179,6 +184,7 @@ public class PathFinder : MonoBehaviour
         else
         {
             addNode.G = CursorNode.G + gScore;
+            //addNode.H = CalculateH(addNode);
             addNode.H = (Mathf.Abs(addNode.Position.x - GoalNodePosition.x) +
                               Mathf.Abs(addNode.Position.y - GoalNodePosition.y)) * CROSS_COST;
             addNode.ParentNode = CursorNode;
@@ -196,5 +202,57 @@ public class PathFinder : MonoBehaviour
         }
 
         return false;
+    }
+
+    private Node GetCurrsorNode()
+    {
+        // F > H > G
+
+        List<Node> smallestFNodes = new List<Node>();
+        List<Node> smallestHNodes = new List<Node>();
+
+        //List<Node> hNodes = new List<Node>();
+
+        Node tempNode = OpenList[0];
+        // OpenList 중 가장 작은 F
+        for (int i = 1; i < OpenList.Count; ++i)
+        {
+            // Tilemap에서는 F, G, H가 똑같은 값이 있다.
+            if (OpenList[i].F <= tempNode.F)
+            {
+                tempNode = OpenList[i];
+            }
+        }
+        // 가장 작은 동일한 F값 추출.
+        for (int i = 1; i < OpenList.Count; ++i)
+        {
+            if (tempNode.F == OpenList[i].F)
+            {
+                smallestFNodes.Add(OpenList[i]);
+            }
+        }
+        if (smallestFNodes.Count <= 1)
+            return tempNode;
+
+
+        // F항목중 가장 작은 H값 추출.
+        tempNode = smallestFNodes[0];
+        for (int i = 0; i < smallestFNodes.Count; ++i)
+        {
+            if (smallestFNodes[i].H <= tempNode.H)
+                tempNode = smallestFNodes[i];
+        }
+        // 동일한 H값 추출.
+        for (int i = 1; i < smallestFNodes.Count; ++i)
+        {
+            if (tempNode.H == smallestFNodes[i].H)
+            {
+                smallestHNodes.Add(OpenList[i]);
+            }
+        }
+        if (smallestHNodes.Count <= 1)
+            return tempNode;
+
+        return tempNode;
     }
 }

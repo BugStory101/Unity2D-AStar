@@ -7,13 +7,13 @@ public class TilemapDatas : MonoBehaviour
     public Dictionary<TileBase, TileData> DataFromTiles;
 
     [SerializeField]
-    private List<TileData> m_TileDatas;
+    private List<TileData> TileDatas;
     private Tilemap Tilemap;
 
     void Awake()
     {
         DataFromTiles = new Dictionary<TileBase, TileData>();
-        foreach (TileData tileData in m_TileDatas)
+        foreach (TileData tileData in TileDatas)
         {
             foreach (TileBase tileBase in tileData.Tiles)
             {

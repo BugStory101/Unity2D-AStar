@@ -30,6 +30,25 @@ public class TilemapNodes : MonoBehaviour
         }
     }
 
+    public void ClearNodeData()
+    {
+        foreach(Node node in PositionFromNode.Values)
+        {
+            node.G = 0;
+            node.H = 0;
+            node.ParentNode = null;
+        }
+
+        /*
+        foreach(KeyValuePair<Vector3Int, Node> keyValue in PositionFromNode)
+        {
+            keyValue.Value.G = 0;
+            keyValue.Value.H = 0;
+            keyValue.Value.ParentNode = null;
+        }
+        */
+    }
+
     public Node GetNodeOrNull(Vector3Int position)
     {
         Node returnNode;
