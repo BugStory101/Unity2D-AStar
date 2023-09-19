@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class TilemapDatas : MonoBehaviour
 {
-    public Dictionary<TileBase, TileData> DataFromTiles;
+    public Dictionary<TileBase, TileData> DataFromTiles = new Dictionary<TileBase, TileData>();
 
     [SerializeField]
     private List<TileData> TileDatas;
@@ -12,7 +12,6 @@ public class TilemapDatas : MonoBehaviour
 
     void Awake()
     {
-        DataFromTiles = new Dictionary<TileBase, TileData>();
         foreach (TileData tileData in TileDatas)
         {
             foreach (TileBase tileBase in tileData.Tiles)

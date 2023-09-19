@@ -4,15 +4,13 @@ using UnityEngine.Tilemaps;
 
 public class TilemapNodes : MonoBehaviour
 {
-    public Dictionary<Vector3Int, Node> PositionFromNode;
+    public Dictionary<Vector3Int, Node> PositionFromNode = new Dictionary<Vector3Int, Node>();
 
     private Tilemap Tilemap;
 
     void Awake()
     {
         Tilemap = GetComponent<Mapmanager>().Tilemap;
-
-        PositionFromNode = new Dictionary<Vector3Int, Node>();
 
         int minX = (int)Tilemap.localBounds.min.x;
         int minY = (int)Tilemap.localBounds.min.y;

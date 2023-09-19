@@ -6,7 +6,7 @@ using TMPro;
 
 public class TileTextViewer : MonoBehaviour
 {
-    public Dictionary<Vector3Int, TextMeshProUGUI> Texts;
+    public Dictionary<Vector3Int, TextMeshProUGUI> Texts = new Dictionary<Vector3Int, TextMeshProUGUI>();
 
     private const string TILEMAP_TEXT_PREFAB_PATH = "Assets/Prefabs/TileText.prefab";
     private const string POSITION_GHF_TEXT = "{0} \r\n" + 
@@ -22,7 +22,6 @@ public class TileTextViewer : MonoBehaviour
     {
         Tilemap = GetComponent<Mapmanager>().Tilemap;        
         Canvas = FindAnyObjectByType<Canvas>();
-        Texts = new Dictionary<Vector3Int, TextMeshProUGUI>();
 
         LoadPrefabs();
     }

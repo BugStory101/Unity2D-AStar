@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ public class PathFinder : MonoBehaviour
 {
     [SerializeField]
     public bool b_AllowDiagonal;
+
+    [SerializeField]
+    public float WaitForSeconds = 0.2f;
 
     public Vector3Int StartNodePosition;
     public Vector3Int GoalNodePosition;
@@ -15,6 +19,8 @@ public class PathFinder : MonoBehaviour
     private Node CursorNode;
     private TilemapDatas TilemapDatas;
     private TilemapNodes TilemapNodes;
+    private TileTextViewer TileTextViewer;
+    private TileLineViewer TileLineViewer;
 
     private List<Node> OpenList;
     private List<Node> CloseList;
@@ -24,10 +30,35 @@ public class PathFinder : MonoBehaviour
     {
         TilemapDatas = GetComponent<TilemapDatas>();
         TilemapNodes = GetComponent<TilemapNodes>();
+        TileTextViewer = GetComponent<TileTextViewer>();
+        TileLineViewer = GetComponent<TileLineViewer>();
     }
 
-    public bool Find(Vector3Int startPosition, Vector3Int goalPosition)
+    public void Find(Vector3Int startPosition, Vector3Int goalPosition)
     {
+        StartCoroutine(CourutinFind(startPosition, goalPosition));
+    }
+
+    public List<Vector3Int> GetPathList()
+    {
+        return PathList;
+    }
+
+    public List<Node> GetOpenList()
+    {
+        return OpenList;
+    }
+
+    public List<Node> GetCloseList()
+    {
+        return CloseList;
+    }
+
+    private IEnumerator CourutinFind(Vector3Int startPosition, Vector3Int goalPosition)
+    {
+        TilemapNodes.ClearNodeData();
+        TileTextViewer.ClearText();
+
         OpenList = new List<Node>();
         CloseList = new List<Node>();
         PathList = new List<Vector3Int>();
@@ -36,14 +67,14 @@ public class PathFinder : MonoBehaviour
         Node StartNode = TilemapNodes.GetNodeOrNull(startPosition);
         if (StartNode == null)
         {
-            return false;
+            yield break;
         }
 
         GoalNodePosition = goalPosition;
         Node GoalNode = TilemapNodes.GetNodeOrNull(goalPosition);
         if (GoalNode == null)
         {
-            return false;
+            yield break;
         }
 
         OpenList.Add(StartNode);
@@ -57,14 +88,17 @@ public class PathFinder : MonoBehaviour
                 Node reverseCursorNode = GoalNode;
 
                 while (reverseCursorNode != StartNode)
-                {                    
+                {
                     PathList.Add(reverseCursorNode.Position);
                     reverseCursorNode = reverseCursorNode.ParentNode;
                 }
                 PathList.Add(StartNode.Position);
                 PathList.Reverse();
 
-                return true;
+                TileLineViewer.AddPositionList(PathList);
+                TileLineViewer.SetLineVisible(true);
+
+                yield break;
             }
 
             Vector3Int position = new Vector3Int();
@@ -115,24 +149,14 @@ public class PathFinder : MonoBehaviour
 
             OpenList.Remove(CursorNode);
             CloseList.Add(CursorNode);
+
+            TileTextViewer.SetTileCost(OpenList);
+            TileTextViewer.SetTileCost(CloseList);
+
+            yield return new WaitForSeconds(WaitForSeconds);
         }
 
-        return false;
-    }
-
-    public List<Vector3Int> GetPathList()
-    {
-        return PathList;
-    }
-
-    public List<Node> GetOpenList()
-    {
-        return OpenList;
-    }
-
-    public List<Node> GetCloseList()
-    {
-        return CloseList;
+        yield break;
     }
 
     private void AddOpenList(Vector3Int nodePosition)

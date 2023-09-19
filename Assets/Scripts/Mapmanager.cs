@@ -27,7 +27,7 @@ public class Mapmanager : MonoBehaviour
     private PathFinder PathFinder;    
 
 
-    public void Awake()
+    void Awake()
     {
         Tilemap.CompressBounds();
         TilemapDatas = GetComponent<TilemapDatas>();
@@ -116,22 +116,7 @@ public class Mapmanager : MonoBehaviour
         if ((b_ClickedStart == false) || (b_ClickedGoal == false))
             return;
 
-        TilemapNodes.ClearNodeData();
-        TileTextViewer.ClearText();
-
         // Find
-        if (PathFinder.Find(StartPosition, GoalPosition) == false)
-            return;
-
-        // Line
-        List<Vector3Int> pathList = PathFinder.GetPathList();
-        LineViewer.AddPositionList(pathList);
-        LineViewer.SetLineVisible(true);
-
-        // Text
-        List<Node> openList = PathFinder.GetOpenList();
-        TileTextViewer.SetTileCost(openList);
-        List<Node> closeList = PathFinder.GetCloseList();
-        TileTextViewer.SetTileCost(closeList);
+        PathFinder.Find(StartPosition, GoalPosition);
     }
 }
